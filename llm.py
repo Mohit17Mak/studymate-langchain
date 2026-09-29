@@ -2,9 +2,9 @@ import os
 
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-
 from memory import ConversationMemory
-
+from langchain_core.messages import HumanMessage
+from prompts import SYSTEM_PROMPT
 
 load_dotenv()
 
@@ -22,10 +22,17 @@ def get_llm():
 
 
 def chat(llm, memory, user_input):
+    history = memory.get_messages()
+
+    messages = [
+        SYSTEM_PROMPT,
+        *history,
+        HumanMessage(content=user_input),
+    ]
+
+    response = llm.invoke(messages)
+
     memory.add_user_message(user_input)
-
-    response = llm.invoke(memory.get_messages())
-
     memory.add_ai_message(response.content)
 
     return response.content
