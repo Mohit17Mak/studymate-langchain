@@ -13,7 +13,10 @@ class ConversationMemory:
         self.history.add_ai_message(message)
 
     def get_messages(self):
-        return self.history.messages[-self.max_messages:]
+        return self.history.messages[-self.max_messages :]
 
     def clear(self):
         self.history.clear()
+
+    def message_count(self):
+        return len(self.history.messages)

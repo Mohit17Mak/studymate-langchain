@@ -2,9 +2,11 @@ import os
 
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-from memory import ConversationMemory
 from langchain_core.messages import HumanMessage
+
+from memory import ConversationMemory
 from prompts import SYSTEM_PROMPT
+
 
 load_dotenv()
 
@@ -43,8 +45,8 @@ def main():
     memory = ConversationMemory()
 
     print("\n==============================")
-    print("        StudyMate")
-    print("   AI Learning Companion")
+    print("        PromptForge")
+    print("   Prompt Engineering Coach")
     print("==============================")
     print("Type /clear to reset.")
     print("Type /exit to quit.\n")
@@ -56,21 +58,26 @@ def main():
             continue
 
         if user_input.lower() == "/exit":
-            print("StudyMate: Goodbye!")
+            print("PromptForge: Keep practicing. Goodbye!")
             break
 
         if user_input.lower() == "/clear":
             memory.clear()
-            print("StudyMate: Conversation cleared.\n")
+            print("PromptForge: Learning session cleared.\n")
             continue
 
         try:
-            answer = chat(llm, memory, user_input)
-            print(f"StudyMate: {answer}\n")
+            answer = chat(
+                llm,
+                memory,
+                user_input,
+            )
+
+            print(f"PromptForge: {answer}\n")
 
         except Exception as error:
             print(
-                f"StudyMate: Something went wrong.\n"
+                "PromptForge: Something went wrong.\n"
                 f"{type(error).__name__}: {error}\n"
             )
 
