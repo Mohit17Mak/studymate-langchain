@@ -7,16 +7,15 @@ from coach.profile import LearnerProfile
 
 
 class CoachingSession:
-    """
-    Coordinates the PromptForge learning loop.
-    """
-
     def __init__(self, llm: ChatGoogleGenerativeAI):
         self.llm = llm
         self.profile = LearnerProfile()
 
     def analyze(self, prompt: str):
-        return analyze_prompt(self.llm, prompt)
+        return analyze_prompt(
+            self.llm,
+            prompt,
+        )
 
     def evaluate(
         self,
@@ -47,14 +46,29 @@ class CoachingSession:
             learner_context=self._build_context(),
         )
 
+    def get_profile(self) -> dict:
+        return self.profile.get_summary()
+
     def _build_context(self) -> str:
-        weakest = self.profile.get_weakest_skills(limit=3)
+        profile = self.profile
+
+        weakest = profile.get_weakest_skills(
+            limit=3
+        )
 
         return (
             f"Completed challenges: "
-            f"{self.profile.completed_challenges}. "
+            f"{profile.completed_challenges}. "
+
+            f"Total evaluations: "
+            f"{profile.total_evaluations}. "
+
             f"Current difficulty: "
-            f"{self.profile.current_difficulty}. "
+            f"{profile.current_difficulty}. "
+
+            f"Overall progress: "
+            f"{profile.get_overall_progress()}%. "
+
             f"Skills needing attention: "
             f"{', '.join(weakest)}."
         )
